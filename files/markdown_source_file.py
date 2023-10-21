@@ -39,16 +39,26 @@ class MarkdownSourceFile(PhysicalSourceFile):
         with open(self.source_path, 'r') as f:
             input = f.read()
         
+        # Prepare Markdown file
+        input = _change_markdown_link_pages_prefix(input)
+        input = self._set_canonical_url(input)
+        input = re.sub(r'^<!--.*?-->', '', input, flags=re.DOTALL | re.MULTILINE)
+        
         return compile_markdown_string(input)
+
+    """
+    Add Canonical URL to Markdown Metadata section
+    """
+    def _set_canonical_url(self, content: str):
+        canonical_url = f'{config.URL_PREFIX}/{self.get_relative_url()}'
+        content = re.sub(r'\A---(.*?)---', rf'--- \1canonical_url: {canonical_url}\n---', content, flags=re.DOTALL | re.MULTILINE)
+        return content
         
 
 def compile_markdown_string(content: str):
-    content = _change_markdown_link_pages_prefix(content)
-    stripped_input = re.sub(r'^<!--.*?-->', '', content, flags=re.DOTALL | re.MULTILINE)
-
     result = subprocess.run(
         ["pandoc", "--template", config.TEMPLATE, "--wrap=none", "-f", "markdown-tex_math_dollars-raw_tex"],
-        input=stripped_input,
+        input=content,
         text=True,
         stdout=subprocess.PIPE
     )
