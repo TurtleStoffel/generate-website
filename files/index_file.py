@@ -1,6 +1,8 @@
 from .markdown_source_file import compile_markdown_string
 from .source_file import VirtualSourceFile, PhysicalSourceFile
 
+import config
+
 class IndexFile(VirtualSourceFile):
     def __init__(self, files: list[PhysicalSourceFile], root: str):
         self.files = files.copy()
@@ -16,7 +18,10 @@ class IndexFile(VirtualSourceFile):
         if not self.root:
             raise RuntimeError("A code-base did not have a root defined")
 
-        html = '---\ntitle: Index\n---\n'
+        canonical_url = f'{config.URL_PREFIX}/{self.get_relative_url()}'
+
+        html = '---\ntitle: Index\n'
+        html += f'canonical_url: {canonical_url}\n---\n'
         for file in self.files:
             stripped_file_name = file.source_path.removeprefix(f'{self.root}/')
             html += f'<a href="/{file.get_relative_url()}">{stripped_file_name}</a></br>\n'

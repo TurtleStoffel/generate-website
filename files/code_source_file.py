@@ -42,6 +42,7 @@ class CodeSourceFile(PhysicalSourceFile):
         # would be replaced twice
         template = template.replace('$title$', Path(self.source_path).name)
         template = re.sub(r'\$\{ if\(breadcrumbs\) \}.*\$\{ endif \}', '', template, flags=re.DOTALL)
+        template = template.replace('        <link rel="canonical" href="$canonical_url$">', '')
         template = template.replace('$body$', content_with_html_tags)
 
         return template
