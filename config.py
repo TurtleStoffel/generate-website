@@ -1,11 +1,16 @@
+import argparse
 import yaml
 import os
 
-from pathlib import Path
+# Parse command line arguments
+parser = argparse.ArgumentParser(
+    description='Convert Markdown files to HTML'
+)
+parser.add_argument('config_file', help='Configuration file')
+args = parser.parse_args()
 
-source_folder = Path(__file__).parent
-
-with open(f'{source_folder}/config.yaml', 'r') as file:
+# Load configuration
+with open(args.config_file, 'r') as file:
     config = yaml.safe_load(file)
 
 URL_PREFIX = config['url_prefix']

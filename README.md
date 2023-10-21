@@ -3,7 +3,14 @@
 Source code for the transforming my website from Markdown files to HTML files and automatically
 generate a `sitemap.txt` file.
 
-The tool is configured through a `config.yaml`-file with the following configuration:
+The tool is configured through a configuration file which is the first positional argument when
+running the script.
+
+```sh
+python3 main.py <config_file>
+```
+
+The configuration file is a YAML file and should contain the following content:
 
 ```yaml
 url_prefix: <url prefix used when generating the sitemap>
