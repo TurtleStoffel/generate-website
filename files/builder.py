@@ -8,5 +8,5 @@ def build_file_instance(file_path, type) -> SourceFile:
         return MarkdownSourceFile(file_path)
     elif type == 'copy':
         return CopyFile(file_path)
-    elif type == 'code-base' or type == 'code':
+    elif type == 'code-base':
         return CodeSourceFile(file_path)
