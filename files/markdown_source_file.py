@@ -51,13 +51,14 @@ class MarkdownSourceFile(PhysicalSourceFile):
     """
     def _set_canonical_url(self, content: str):
         canonical_url = f'{config.URL_PREFIX}/{self.get_relative_url()}'
-        content = re.sub(r'\A---(.*?)---', rf'--- \1canonical_url: {canonical_url}\n---', content, flags=re.DOTALL | re.MULTILINE)
+        canonical_url_html = f'<link rel="canonical" href="{canonical_url}">'
+        content = re.sub(r'\A---(.*?)---', rf'--- \1canonical_url: {canonical_url_html}\n---', content, flags=re.DOTALL | re.MULTILINE)
         return content
         
 
 def compile_markdown_string(content: str):
     result = subprocess.run(
-        ["pandoc", "--template", config.TEMPLATE, "--wrap=none", "-f", "markdown-tex_math_dollars-raw_tex"],
+        ["pandoc", "--template", config.TEMPLATE, "--wrap=none", "-f", "gfm-tex_math_dollars"],
         input=content,
         text=True,
         stdout=subprocess.PIPE
