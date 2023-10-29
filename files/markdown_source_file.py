@@ -20,7 +20,7 @@ class MarkdownSourceFile(PhysicalSourceFile):
             if parent_folder == Path('.'):
                 return ''
             else:
-                return f'{parent_folder}'
+                return f'{parent_folder}/'
         else:
             return f'{parent_folder}/{filename}'
     
