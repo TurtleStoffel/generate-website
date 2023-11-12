@@ -1,7 +1,7 @@
 # Generate Website
 
-Source code for the transforming my website from Markdown files to HTML files and automatically
-generate a `sitemap.txt` file.
+Source code for transforming my website from Markdown files to HTML files and automatically
+generating a `sitemap.txt` file.
 
 The tool is configured through a configuration file which is the first positional argument when
 running the script.
@@ -20,7 +20,7 @@ template: <Pandoc template file>
 
 files_to_process:
 - glob: <pattern used to find files, relative to root_dir>
-  type: <one of text|code-base|copy>
+  type: <one of [text|copy]>
 ```
 
 For more information, visit the main website at [https://www.turtlestoffel.com][1].

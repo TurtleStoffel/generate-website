@@ -6,14 +6,9 @@ class FileGroup:
     def __init__(self, input_dict: dict):
         self.glob = input_dict['glob']
         type = input_dict['type']
-        root = input_dict.get('root', None)
 
         resolved_file_paths = glob.glob(self.glob, recursive=True)
         self.files = [files.build_file_instance(file_path, type) for file_path in resolved_file_paths]
-
-        if type == 'code-base':
-            assert(root)
-            self.files.append(files.IndexFile(self.files, root))
     
     def parse(self):
         for file in self.files:
