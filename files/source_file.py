@@ -33,10 +33,3 @@ class PhysicalSourceFile(SourceFile):
     def __init__(self, source_path: str, config):
         super().__init__(config)
         self.source_path = source_path
-
-
-"""
-Source file that is generated in memory
-"""
-class VirtualSourceFile(SourceFile):
-    pass
