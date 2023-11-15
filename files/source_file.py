@@ -1,11 +1,13 @@
-import config
 import os
 
 from pathlib import Path
 
 class SourceFile:
+    def __init__(self, config):
+        self.config = config
+
     def write(self):
-        destination_path = f'{config.WEBSITE_DESTINATION_FOLDER}/{self.get_relative_destination_path()}'
+        destination_path = f'{self.config.WEBSITE_DESTINATION_FOLDER}/{self.get_relative_destination_path()}'
 
         os.makedirs(Path(destination_path).parent, exist_ok=True)
 
@@ -28,7 +30,8 @@ class SourceFile:
 Source file that is stored on disk
 """
 class PhysicalSourceFile(SourceFile):
-    def __init__(self, source_path: str):
+    def __init__(self, source_path: str, config):
+        super().__init__(config)
         self.source_path = source_path
 
 

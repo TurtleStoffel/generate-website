@@ -1,5 +1,6 @@
 import glob
 
+import config
 import files
 
 class FileGroup:
@@ -8,7 +9,7 @@ class FileGroup:
         type = input_dict['type']
 
         resolved_file_paths = glob.glob(self.glob, recursive=True)
-        self.files = [files.build_file_instance(file_path, type) for file_path in resolved_file_paths]
+        self.files = [files.build_file_instance(file_path, type, config) for file_path in resolved_file_paths]
     
     def parse(self):
         for file in self.files:

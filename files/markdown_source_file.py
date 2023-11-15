@@ -3,13 +3,11 @@ import subprocess
 
 from pathlib import Path
 
-import config
-
 from .source_file import PhysicalSourceFile
 
 class MarkdownSourceFile(PhysicalSourceFile):
-    def __init__(self, source_path):
-        super().__init__(source_path)
+    def __init__(self, source_path, config):
+        super().__init__(source_path, config)
     
     def get_relative_url(self):
         filename = Path(self.source_path).stem
@@ -44,21 +42,21 @@ class MarkdownSourceFile(PhysicalSourceFile):
         input = self._set_canonical_url(input)
         input = re.sub(r'^<!--.*?-->', '', input, flags=re.DOTALL | re.MULTILINE)
         
-        return compile_markdown_string(input)
+        return compile_markdown_string(input, self.config.TEMPLATE)
 
     """
     Add Canonical URL to Markdown Metadata section
     """
     def _set_canonical_url(self, content: str):
-        canonical_url = f'{config.URL_PREFIX}/{self.get_relative_url()}'
+        canonical_url = f'{self.config.URL_PREFIX}/{self.get_relative_url()}'
         canonical_url_html = f'<link rel="canonical" href="{canonical_url}">'
         content = re.sub(r'\A---(.*?)---', rf'--- \1canonical_url: {canonical_url_html}\n---', content, flags=re.DOTALL | re.MULTILINE)
         return content
         
 
-def compile_markdown_string(content: str):
+def compile_markdown_string(content: str, template):
     result = subprocess.run(
-        ["pandoc", "--template", config.TEMPLATE, "--wrap=none", "-f", "gfm-tex_math_dollars"],
+        ["pandoc", "--template", template, "--wrap=none", "-f", "gfm-tex_math_dollars"],
         input=content,
         text=True,
         stdout=subprocess.PIPE
