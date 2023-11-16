@@ -18,11 +18,11 @@ class MarkdownSourceFile:
         if filename == "index":
             # Ignore self-referential folder when defining URLs
             if parent_folder == Path('.'):
-                return ''
+                return '/'
             else:
-                return f'{parent_folder}/'
+                return f'/{parent_folder}/'
         else:
-            return f'{parent_folder}/{filename}'
+            return f'/{parent_folder}/{filename}'
     
     def get_permalink_mapping(self):
         with open(self.source_path, 'r') as f:
@@ -31,9 +31,10 @@ class MarkdownSourceFile:
         permalink = get_permalink(content)
 
         if permalink:
+            assert(permalink.startswith('/'))
             return {
-                'permalink': f'/{permalink}',
-                'url': f'/{self.get_relative_url()}'
+                'permalink': permalink,
+                'url': self.get_relative_url()
             }
     
     def get_relative_destination_path(self):
@@ -72,7 +73,7 @@ class MarkdownSourceFile:
     Add Canonical URL to Markdown Metadata section
     """
     def _set_canonical_url(self, content: str):
-        canonical_url = f'{self.config.URL_PREFIX}/{self.get_relative_url()}'
+        canonical_url = f'{self.config.URL_PREFIX}{self.get_relative_url()}'
         canonical_url_html = f'<link rel="canonical" href="{canonical_url}">'
         content = re.sub(r'\A---(.*?)---', rf'--- \1canonical_url: {canonical_url_html}\n---', content, flags=re.DOTALL | re.MULTILINE)
         return content

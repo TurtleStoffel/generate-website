@@ -13,7 +13,7 @@ Sorts the provided file paths and writes them to a sitemap
 def generate_sitemap(markdown_files: list[MarkdownSourceFile]):
     relative_urls = [file.get_relative_url() for file in markdown_files]
     
-    urls = [f'{config.URL_PREFIX}/{relative_url}\n' for relative_url in relative_urls]
+    urls = [f'{config.URL_PREFIX}{relative_url}\n' for relative_url in relative_urls]
 
     # An explicit sort is required at the end, because wildcards in the input can cause unsorted
     # results:
