@@ -1,7 +1,9 @@
 import re
 import subprocess
+import yaml
 
 from pathlib import Path
+from typing import Optional
 
 from .source_file import PhysicalSourceFile
 
@@ -63,6 +65,17 @@ def compile_markdown_string(content: str, template):
     )
 
     return result.stdout
+
+"""
+Returns Permalink from Metadata in the file if present, otherwise returns None
+"""
+def get_permalink(content: str) -> Optional[str]:
+    match = re.search(r'---(.*?)---', content, flags = re.MULTILINE | re.DOTALL)
+
+    if not match:
+        return None
+    else:
+        return yaml.safe_load(match.group(1)).get('permalink')
 
 """
 Change Markdown link format from local .md file (starting with '/') to corresponding pages on the

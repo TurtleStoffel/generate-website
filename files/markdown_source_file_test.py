@@ -16,5 +16,38 @@ class MarkdownSourceFile(unittest.TestCase):
 [3]: /some/page
 """)
 
+    def test_get_permalink_from_metadata_if_present(self):
+        content = """
+---
+title: some-random-title
+permalink: some-random-permalink
+breadcrumbs:
+  - name: home
+    url: /
+---
+
+# Random title
+"""
+
+        permalink = markdown_source_file.get_permalink(content)
+
+        self.assertEqual(permalink, 'some-random-permalink')
+
+    def test_get_permalink_from_metadata_returns_none_if_not_present(self):
+        content = """
+---
+title: some-random-title
+breadcrumbs:
+  - name: home
+    url: /
+---
+
+# Random title
+"""
+
+        permalink = markdown_source_file.get_permalink(content)
+
+        self.assertEqual(permalink, None)
+
 if __name__ == '__main__':
     unittest.main()
