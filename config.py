@@ -16,6 +16,8 @@ with open(args.config_file, 'r') as file:
 URL_PREFIX = config['url_prefix']
 ROOT_DIR = os.path.expanduser(config['root_dir'])
 WEBSITE_DESTINATION_FOLDER = os.path.expanduser(config['website_destination_folder'])
+PERMALINK_MAPPING_OUTPUT = os.path.expanduser(config['permalink_mapping_output'])
+
 TEMPLATE = os.path.expanduser(config['template'])
 
 FILES_TO_PROCESS = config['files_to_process']

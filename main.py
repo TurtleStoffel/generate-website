@@ -1,5 +1,6 @@
 import os
 import shutil
+import yaml
 
 import config
 
@@ -29,6 +30,13 @@ def generate_sitemap(file_groups: list[FileGroup]):
     with open(sitemap_path, 'w') as f:
         f.writelines(sorted_urls)
 
+def generate_permalink_mapping(file_groups: list[FileGroup]):
+    mappings = []
+    for file_group in file_groups:
+        mappings.extend(file_group.get_permalink_mapping())
+    
+    with open(config.PERMALINK_MAPPING_OUTPUT, 'w') as f:
+        f.writelines(yaml.dump(mappings))
 
 if __name__ == '__main__':
     os.chdir(os.path.expanduser(config.ROOT_DIR))
@@ -42,3 +50,4 @@ if __name__ == '__main__':
         file_group.parse()
 
     generate_sitemap(file_groups_to_process)
+    generate_permalink_mapping(file_groups_to_process)

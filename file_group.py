@@ -22,3 +22,13 @@ class FileGroup:
     """
     def get_relative_urls(self):
         return [file.get_relative_url() for file in self.files if not isinstance(file, CopyFile)]
+    
+    def get_permalink_mapping(self):
+        mappings = []
+        for file in self.files:
+            if not isinstance(file, CopyFile):
+                mapping = file.get_permalink_mapping()
+                if mapping:
+                    mappings.append(mapping)
+        
+        return mappings

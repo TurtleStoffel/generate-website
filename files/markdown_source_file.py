@@ -24,6 +24,18 @@ class MarkdownSourceFile(SourceFile):
         else:
             return f'{parent_folder}/{filename}'
     
+    def get_permalink_mapping(self):
+        with open(self.source_path, 'r') as f:
+            content = f.read()
+        
+        permalink = get_permalink(content)
+
+        if permalink:
+            return {
+                'permalink': f'/{permalink}',
+                'url': f'/{self.get_relative_url()}'
+            }
+    
     def get_relative_destination_path(self):
         return f'{Path(self.source_path).parent}/{Path(self.source_path).stem}.html'
 
