@@ -2,16 +2,15 @@ import glob
 
 import config
 
-from files.builder import build_file_instance
 from files.image_file import CopyFile
+from files.markdown_source_file import MarkdownSourceFile
 
 class MarkdownFileGroup:
     def __init__(self, input_dict: dict):
         self.glob = input_dict['glob']
-        type = input_dict['type']
 
         resolved_file_paths = glob.glob(self.glob, recursive=True)
-        self.files = [build_file_instance(file_path, type, config) for file_path in resolved_file_paths]
+        self.files = [MarkdownSourceFile(file_path, config) for file_path in resolved_file_paths]
     
     def parse(self):
         for file in self.files:
@@ -35,10 +34,9 @@ class MarkdownFileGroup:
 class CopyFileGroup:
     def __init__(self, input_dict: dict):
         self.glob = input_dict['glob']
-        type = input_dict['type']
 
         resolved_file_paths = glob.glob(self.glob, recursive=True)
-        self.files = [build_file_instance(file_path, type, config) for file_path in resolved_file_paths]
+        self.files = [CopyFile(file_path, config) for file_path in resolved_file_paths]
     
     def parse(self):
         for file in self.files:
