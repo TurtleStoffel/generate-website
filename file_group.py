@@ -1,7 +1,9 @@
 import glob
 
 import config
-import files
+
+from files.builder import build_file_instance
+from files.image_file import CopyFile
 
 class FileGroup:
     def __init__(self, input_dict: dict):
@@ -9,7 +11,7 @@ class FileGroup:
         type = input_dict['type']
 
         resolved_file_paths = glob.glob(self.glob, recursive=True)
-        self.files = [files.build_file_instance(file_path, type, config) for file_path in resolved_file_paths]
+        self.files = [build_file_instance(file_path, type, config) for file_path in resolved_file_paths]
     
     def parse(self):
         for file in self.files:
@@ -20,4 +22,4 @@ class FileGroup:
     In case the file-group is a code-base, it will also contain the index.html file for the source
     """
     def get_relative_urls(self):
-        return [file.get_relative_url() for file in self.files if not isinstance(file, files.CopyFile)]
+        return [file.get_relative_url() for file in self.files if not isinstance(file, CopyFile)]
