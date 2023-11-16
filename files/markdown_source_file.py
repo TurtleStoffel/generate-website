@@ -1,3 +1,4 @@
+import os
 import re
 import subprocess
 import yaml
@@ -5,11 +6,10 @@ import yaml
 from pathlib import Path
 from typing import Optional
 
-from .source_file import SourceFile
-
-class MarkdownSourceFile(SourceFile):
+class MarkdownSourceFile:
     def __init__(self, source_path, config):
-        super().__init__(source_path, config)
+        self.source_path = source_path
+        self.config = config
     
     def get_relative_url(self):
         filename = Path(self.source_path).stem
@@ -38,6 +38,16 @@ class MarkdownSourceFile(SourceFile):
     
     def get_relative_destination_path(self):
         return f'{Path(self.source_path).parent}/{Path(self.source_path).stem}.html'
+    
+    def write(self):
+        destination_path = f'{self.config.WEBSITE_DESTINATION_FOLDER}/{self.get_relative_destination_path()}'
+
+        os.makedirs(Path(destination_path).parent, exist_ok=True)
+
+        file_content = self._compile()
+
+        with open(destination_path, 'w') as f:
+            f.write(file_content)
 
     """
     The source file is preprocessed by stripping all todo items in the form of

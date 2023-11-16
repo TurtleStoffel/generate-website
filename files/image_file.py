@@ -3,15 +3,13 @@ import shutil
 
 from pathlib import Path
 
-from .source_file import SourceFile
-
 """
 File that is copied from it's original location to the destination without any changes
 """
-class CopyFile(SourceFile):
+class CopyFile:
     def __init__(self, source_path: str, config):
-        # Relative source and destination path are the same for image files
-        super().__init__(source_path, config)
+        self.source_path = source_path
+        self.config = config
     
     def write(self):
         destination_path = f'{self.config.WEBSITE_DESTINATION_FOLDER}/{self.source_path}'
