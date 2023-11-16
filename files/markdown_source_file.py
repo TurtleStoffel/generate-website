@@ -68,11 +68,11 @@ def compile_markdown_string(content: str, template):
 Change Markdown link format from local .md file (starting with '/') to corresponding pages on the
 website by stripping its suffix.
 
-Suffix for standard pages is '.md'.
-Suffix for index pages is '/index.md'.
+Suffix for standard pages is '.md'    /some/page.md         => /some/page
+Suffix for index pages is 'index.md'  /some/folder/index.md => /some/folder/
 """
 def _change_markdown_link_pages_prefix(content: str):
     # Strip suffix for index pages
-    content = re.sub(r'^(\[\d+\]: )(/.*)/index.md$', r'\1 \2', content, flags=re.MULTILINE)
+    content = re.sub(r'^(\[\d+\]: )(/.*/)index.md$', r'\1\2', content, flags=re.MULTILINE)
     # Strip suffix for other pages
-    return re.sub(r'^(\[\d+\]: )(/.*).md$', r'\1 \2', content, flags=re.MULTILINE)
+    return re.sub(r'^(\[\d+\]: )(/.*).md$', r'\1\2', content, flags=re.MULTILINE)
