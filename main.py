@@ -34,6 +34,13 @@ def generate_permalink_mapping(markdown_files: list[MarkdownSourceFile]):
         if mapping:
             mappings.append(mapping)
     
+    # Validate uniqueness of permalinks
+    uniqueness_set = set()
+    for mapping in mappings:
+        permalink = mapping['permalink']
+        assert(permalink not in uniqueness_set)
+        uniqueness_set.add(permalink)
+    
     with open(config.PERMALINK_MAPPING_OUTPUT, 'w') as f:
         f.writelines(yaml.dump(mappings))
 
