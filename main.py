@@ -40,16 +40,16 @@ def generate_permalink_mapping(file_groups: list[MarkdownFileGroup]):
 if __name__ == '__main__':
     os.chdir(os.path.expanduser(config.ROOT_DIR))
 
-    copy_files, markdown_files = get_file_groups_to_process()
+    copy_files, markdown_file_groups = get_file_groups_to_process()
 
     if os.path.exists(config.WEBSITE_DESTINATION_FOLDER):
         shutil.rmtree(config.WEBSITE_DESTINATION_FOLDER)
 
-    for file_group in copy_files:
-        file_group.parse()
+    for file in copy_files:
+        file.write()
     
-    for file_group in markdown_files:
+    for file_group in markdown_file_groups:
         file_group.parse()
 
-    generate_sitemap(markdown_files)
-    generate_permalink_mapping(markdown_files)
+    generate_sitemap(markdown_file_groups)
+    generate_permalink_mapping(markdown_file_groups)

@@ -2,7 +2,6 @@ import glob
 
 import config
 
-from files.image_file import CopyFile
 from files.markdown_source_file import MarkdownSourceFile
 
 class MarkdownFileGroup:
@@ -30,14 +29,3 @@ class MarkdownFileGroup:
                 mappings.append(mapping)
         
         return mappings
-
-class CopyFileGroup:
-    def __init__(self, input_dict: dict):
-        self.glob = input_dict['glob']
-
-        resolved_file_paths = glob.glob(self.glob, recursive=True)
-        self.files = [CopyFile(file_path, config) for file_path in resolved_file_paths]
-    
-    def parse(self):
-        for file in self.files:
-            file.write()
