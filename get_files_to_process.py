@@ -10,7 +10,7 @@ from files.markdown_source_file import MarkdownSourceFile
 Reads file groups to be processed and validates if files are ordered to make it easier to see if
 URLs have changed in the resulting Sitemap.
 """
-def get_file_groups_to_process() -> tuple[list[CopyFile], list[MarkdownSourceFile]]:
+def get_files_to_process() -> tuple[list[CopyFile], list[MarkdownSourceFile]]:
     # Force the list of files to be sorted to avoid a messy input file
     if not util.is_sorted([file['glob'] for file in config.FILES_TO_PROCESS]):
         raise RuntimeError("List of files to process must be sorted")

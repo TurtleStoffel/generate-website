@@ -4,7 +4,7 @@ import yaml
 
 import config
 
-from get_files_to_process import get_file_groups_to_process
+from get_files_to_process import get_files_to_process
 from files.markdown_source_file import MarkdownSourceFile
 
 """
@@ -40,7 +40,7 @@ def generate_permalink_mapping(markdown_files: list[MarkdownSourceFile]):
 if __name__ == '__main__':
     os.chdir(os.path.expanduser(config.ROOT_DIR))
 
-    copy_files, markdown_files = get_file_groups_to_process()
+    copy_files, markdown_files = get_files_to_process()
 
     if os.path.exists(config.WEBSITE_DESTINATION_FOLDER):
         shutil.rmtree(config.WEBSITE_DESTINATION_FOLDER)
