@@ -7,8 +7,8 @@ from files.image_file import CopyFile
 from files.markdown_source_file import MarkdownSourceFile
 
 """
-Reads file groups to be processed and validates if files are ordered to make it easier to see if
-URLs have changed in the resulting Sitemap.
+Reads files to be processed and validates if files are ordered to make it easier to see if URLs have
+changed in the resulting Sitemap.
 """
 def get_files_to_process() -> tuple[list[CopyFile], list[MarkdownSourceFile]]:
     # Force the list of files to be sorted to avoid a messy input file
