@@ -19,7 +19,6 @@ class FileGroup:
     
     """
     Get all relative URLs of files in the file group.
-    In case the file-group is a code-base, it will also contain the index.html file for the source
     """
     def get_relative_urls(self):
         return [file.get_relative_url() for file in self.files if not isinstance(file, CopyFile)]
