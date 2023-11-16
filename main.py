@@ -5,15 +5,13 @@ import yaml
 import config
 
 from get_files_to_process import get_file_groups_to_process
-from file_group import MarkdownFileGroup
+from files.markdown_source_file import MarkdownSourceFile
 
 """
 Sorts the provided file paths and writes them to a sitemap
 """
-def generate_sitemap(file_groups: list[MarkdownFileGroup]):
-    relative_urls = []
-    for file_group in file_groups:
-        relative_urls.extend(file_group.get_relative_urls())
+def generate_sitemap(markdown_files: list[MarkdownSourceFile]):
+    relative_urls = [file.get_relative_url() for file in markdown_files]
     
     urls = [f'{config.URL_PREFIX}/{relative_url}\n' for relative_url in relative_urls]
 
@@ -29,10 +27,12 @@ def generate_sitemap(file_groups: list[MarkdownFileGroup]):
     with open(sitemap_path, 'w') as f:
         f.writelines(sorted_urls)
 
-def generate_permalink_mapping(file_groups: list[MarkdownFileGroup]):
+def generate_permalink_mapping(markdown_files: list[MarkdownSourceFile]):
     mappings = []
-    for file_group in file_groups:
-        mappings.extend(file_group.get_permalink_mapping())
+    for file in markdown_files:
+        mapping = file.get_permalink_mapping()
+        if mapping:
+            mappings.append(mapping)
     
     with open(config.PERMALINK_MAPPING_OUTPUT, 'w') as f:
         f.writelines(yaml.dump(mappings))
@@ -40,7 +40,7 @@ def generate_permalink_mapping(file_groups: list[MarkdownFileGroup]):
 if __name__ == '__main__':
     os.chdir(os.path.expanduser(config.ROOT_DIR))
 
-    copy_files, markdown_file_groups = get_file_groups_to_process()
+    copy_files, markdown_files = get_file_groups_to_process()
 
     if os.path.exists(config.WEBSITE_DESTINATION_FOLDER):
         shutil.rmtree(config.WEBSITE_DESTINATION_FOLDER)
@@ -48,8 +48,8 @@ if __name__ == '__main__':
     for file in copy_files:
         file.write()
     
-    for file_group in markdown_file_groups:
-        file_group.parse()
+    for file in markdown_files:
+        file.write()
 
-    generate_sitemap(markdown_file_groups)
-    generate_permalink_mapping(markdown_file_groups)
+    generate_sitemap(markdown_files)
+    generate_permalink_mapping(markdown_files)
