@@ -5,13 +5,12 @@ import yaml
 import config
 
 from get_files_to_process import get_file_groups_to_process
-from file_group import FileGroup
-
+from file_group import MarkdownFileGroup
 
 """
 Sorts the provided file paths and writes them to a sitemap
 """
-def generate_sitemap(file_groups: list[FileGroup]):
+def generate_sitemap(file_groups: list[MarkdownFileGroup]):
     relative_urls = []
     for file_group in file_groups:
         relative_urls.extend(file_group.get_relative_urls())
@@ -30,7 +29,7 @@ def generate_sitemap(file_groups: list[FileGroup]):
     with open(sitemap_path, 'w') as f:
         f.writelines(sorted_urls)
 
-def generate_permalink_mapping(file_groups: list[FileGroup]):
+def generate_permalink_mapping(file_groups: list[MarkdownFileGroup]):
     mappings = []
     for file_group in file_groups:
         mappings.extend(file_group.get_permalink_mapping())
