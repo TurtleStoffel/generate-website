@@ -41,13 +41,16 @@ def generate_permalink_mapping(file_groups: list[FileGroup]):
 if __name__ == '__main__':
     os.chdir(os.path.expanduser(config.ROOT_DIR))
 
-    file_groups_to_process = get_file_groups_to_process()
+    copy_files, markdown_files = get_file_groups_to_process()
 
     if os.path.exists(config.WEBSITE_DESTINATION_FOLDER):
         shutil.rmtree(config.WEBSITE_DESTINATION_FOLDER)
 
-    for file_group in file_groups_to_process:
+    for file_group in copy_files:
+        file_group.parse()
+    
+    for file_group in markdown_files:
         file_group.parse()
 
-    generate_sitemap(file_groups_to_process)
-    generate_permalink_mapping(file_groups_to_process)
+    generate_sitemap(markdown_files)
+    generate_permalink_mapping(markdown_files)
