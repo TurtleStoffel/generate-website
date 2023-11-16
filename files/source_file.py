@@ -3,7 +3,8 @@ import os
 from pathlib import Path
 
 class SourceFile:
-    def __init__(self, config):
+    def __init__(self, source_path: str, config):
+        self.source_path = source_path
         self.config = config
 
     def write(self):
@@ -24,12 +25,3 @@ class SourceFile:
 
     def _compile(self):
         raise NotImplementedError()
-
-
-"""
-Source file that is stored on disk
-"""
-class PhysicalSourceFile(SourceFile):
-    def __init__(self, source_path: str, config):
-        super().__init__(config)
-        self.source_path = source_path

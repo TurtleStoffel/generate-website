@@ -5,9 +5,9 @@ import yaml
 from pathlib import Path
 from typing import Optional
 
-from .source_file import PhysicalSourceFile
+from .source_file import SourceFile
 
-class MarkdownSourceFile(PhysicalSourceFile):
+class MarkdownSourceFile(SourceFile):
     def __init__(self, source_path, config):
         super().__init__(source_path, config)
     

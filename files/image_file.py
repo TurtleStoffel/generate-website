@@ -3,12 +3,12 @@ import shutil
 
 from pathlib import Path
 
-from .source_file import PhysicalSourceFile
+from .source_file import SourceFile
 
 """
 File that is copied from it's original location to the destination without any changes
 """
-class CopyFile(PhysicalSourceFile):
+class CopyFile(SourceFile):
     def __init__(self, source_path: str, config):
         # Relative source and destination path are the same for image files
         super().__init__(source_path, config)
