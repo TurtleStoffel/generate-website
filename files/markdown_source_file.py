@@ -14,7 +14,20 @@ class MarkdownSourceFile:
         with open(self.source_path, 'r') as f:
             self.file_content = f.read()
     
+    """
+    Return permalink if defined, otherwise return URL defined by the folder structure.
+    """
     def get_relative_url(self):
+        permalink = get_permalink(self.file_content)
+        if permalink:
+            return permalink
+        
+        return self.get_relative_folder_url()
+    
+    """
+    URL defined by the folder structure.
+    """
+    def get_relative_folder_url(self):
         filename = Path(self.source_path).stem
         parent_folder = Path(self.source_path).parent
         # Index files are automatically resolved as folders when loading a URL
@@ -33,7 +46,7 @@ class MarkdownSourceFile:
         if permalink:
             return {
                 'permalink': permalink,
-                'url': self.get_relative_url()
+                'url': self.get_relative_folder_url()
             }
     
     def get_relative_destination_path(self):
