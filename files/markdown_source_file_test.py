@@ -20,7 +20,7 @@ class MarkdownSourceFile(unittest.TestCase):
         content = """
 ---
 title: some-random-title
-permalink: some-random-permalink
+permalink: /some-random-permalink
 breadcrumbs:
   - name: home
     url: /
@@ -31,7 +31,7 @@ breadcrumbs:
 
         permalink = markdown_source_file.get_permalink(content)
 
-        self.assertEqual(permalink, 'some-random-permalink')
+        self.assertEqual(permalink, '/some-random-permalink')
 
     def test_get_permalink_from_metadata_returns_none_if_not_present(self):
         content = """

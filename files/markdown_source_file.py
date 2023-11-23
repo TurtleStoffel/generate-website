@@ -31,7 +31,6 @@ class MarkdownSourceFile:
         permalink = get_permalink(self.file_content)
 
         if permalink:
-            assert(permalink.startswith('/'))
             return {
                 'permalink': permalink,
                 'url': self.get_relative_url()
@@ -91,11 +90,15 @@ Returns Permalink from Metadata in the file if present, otherwise returns None
 """
 def get_permalink(content: str) -> Optional[str]:
     match = re.search(r'---(.*?)---', content, flags = re.MULTILINE | re.DOTALL)
-
     if not match:
         return None
-    else:
-        return yaml.safe_load(match.group(1)).get('permalink')
+
+    permalink = yaml.safe_load(match.group(1)).get('permalink')
+
+    if permalink:
+        assert(permalink.startswith('/'))
+    
+    return permalink
 
 """
 Change Markdown link format from local .md file (starting with '/') to corresponding pages on the
