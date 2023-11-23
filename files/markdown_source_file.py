@@ -46,18 +46,19 @@ class MarkdownSourceFile:
         if permalink:
             return {
                 'permalink': permalink,
+                'file': f'/{self.source_path}',
                 'url': self.get_relative_folder_url()
             }
     
     def get_relative_destination_path(self):
         return f'{Path(self.source_path).parent}/{Path(self.source_path).stem}.html'
     
-    def write(self):
+    def write(self, file_to_permalink_mapping):
         destination_path = f'{self.config.WEBSITE_DESTINATION_FOLDER}/{self.get_relative_destination_path()}'
 
         os.makedirs(Path(destination_path).parent, exist_ok=True)
 
-        file_content = self._compile()
+        file_content = self._compile(file_to_permalink_mapping)
 
         with open(destination_path, 'w') as f:
             f.write(file_content)
@@ -70,9 +71,9 @@ class MarkdownSourceFile:
     because the VSCode Markdown Preview does not support YAML metadata blocks and they don't stand out
     enough within the document.
     """
-    def _compile(self):
+    def _compile(self, mapping: dict):
         # Prepare Markdown file
-        input = _change_markdown_link_pages_prefix(self.file_content)
+        input = _change_markdown_link_pages_prefix(self.file_content, mapping)
         input = self._set_canonical_url(input)
         input = re.sub(r'^<!--.*?-->', '', input, flags=re.DOTALL | re.MULTILINE)
         
@@ -120,7 +121,10 @@ website by stripping its suffix.
 Suffix for standard pages is '.md'    /some/page.md         => /some/page
 Suffix for index pages is 'index.md'  /some/folder/index.md => /some/folder/
 """
-def _change_markdown_link_pages_prefix(content: str):
+def _change_markdown_link_pages_prefix(content: str, mapping: dict):
+    for (file, permalink) in mapping.items():
+        content = re.sub(rf'^(\[\d+\]: ){file}$', rf'\1{permalink}', content, flags = re.MULTILINE)
+
     # Strip suffix for index pages
     content = re.sub(r'^(\[\d+\]: )(/.*/)index.md$', r'\1\2', content, flags=re.MULTILINE)
     # Strip suffix for other pages

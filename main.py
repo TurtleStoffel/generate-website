@@ -32,7 +32,10 @@ def generate_permalink_mapping(markdown_files: list[MarkdownSourceFile]):
     for file in markdown_files:
         mapping = file.get_permalink_mapping()
         if mapping:
-            mappings.append(mapping)
+            mappings.append({
+                'permalink': mapping['permalink'],
+                'url': mapping['url']
+            })
     
     # Validate uniqueness of permalinks
     uniqueness_set = set()
@@ -55,8 +58,14 @@ if __name__ == '__main__':
     for file in copy_files:
         file.write()
     
+    file_to_permalink_mapping = {}
     for file in markdown_files:
-        file.write()
+        mapping = file.get_permalink_mapping()
+        if mapping:
+            file_to_permalink_mapping[mapping['file']] = mapping['permalink']
+    
+    for file in markdown_files:
+        file.write(file_to_permalink_mapping)
 
     generate_sitemap(markdown_files)
     generate_permalink_mapping(markdown_files)

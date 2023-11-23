@@ -61,5 +61,14 @@ breadcrumbs:
 
         self.assertEqual(result, "[5]: /test/something/content")
 
+    def test_change_markdown_link_pages_prefix_permalink_mapping(self):
+        content = "[5]: /test/something/content.md"
+        mapping = {
+            '/test/something/content.md': '/a-random-permalink'
+        }
+        result = markdown_source_file._change_markdown_link_pages_prefix(content, mapping)
+
+        self.assertEqual(result, "[5]: /a-random-permalink")
+
 if __name__ == '__main__':
     unittest.main()
