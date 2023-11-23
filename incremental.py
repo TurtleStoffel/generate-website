@@ -25,7 +25,7 @@ class EventHandler(FileSystemEventHandler):
             markdown_source_file.write()
 
 if __name__ == "__main__":
-    os.chdir(os.path.expanduser(config.ROOT_DIR))
+    os.chdir(config.ROOT_DIR)
 
     path = '.'
     print(f'start watching directory {path!r}')
