@@ -10,6 +10,9 @@ class MarkdownSourceFile:
     def __init__(self, source_path, config):
         self.source_path = source_path
         self.config = config
+
+        with open(self.source_path, 'r') as f:
+            self.file_content = f.read()
     
     def get_relative_url(self):
         filename = Path(self.source_path).stem
@@ -25,10 +28,7 @@ class MarkdownSourceFile:
             return f'/{parent_folder}/{filename}'
     
     def get_permalink_mapping(self):
-        with open(self.source_path, 'r') as f:
-            content = f.read()
-        
-        permalink = get_permalink(content)
+        permalink = get_permalink(self.file_content)
 
         if permalink:
             assert(permalink.startswith('/'))
@@ -59,11 +59,8 @@ class MarkdownSourceFile:
     enough within the document.
     """
     def _compile(self):
-        with open(self.source_path, 'r') as f:
-            input = f.read()
-        
         # Prepare Markdown file
-        input = _change_markdown_link_pages_prefix(input)
+        input = _change_markdown_link_pages_prefix(self.file_content)
         input = self._set_canonical_url(input)
         input = re.sub(r'^<!--.*?-->', '', input, flags=re.DOTALL | re.MULTILINE)
         
