@@ -44,8 +44,10 @@ def generate_permalink_mapping(markdown_files: list[MarkdownSourceFile]):
         assert(permalink not in uniqueness_set)
         uniqueness_set.add(permalink)
     
+    sorted_mappings = sorted(mappings, key = lambda mapping: mapping['permalink'])
+    
     with open(config.PERMALINK_MAPPING_OUTPUT, 'w') as f:
-        f.writelines(yaml.dump(mappings))
+        f.writelines(yaml.dump(sorted_mappings))
 
 if __name__ == '__main__':
     os.chdir(config.ROOT_DIR)
