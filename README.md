@@ -1,5 +1,7 @@
 # Generate Website
 
+This tool is archived and replaced by [a fork of Quartz][0].
+
 Source code for transforming my website from Markdown files to HTML files and automatically
 generating a `sitemap.txt` file.
 
@@ -26,5 +28,6 @@ files_to_process:
 For more information, visit the main website at [https://www.turtlestoffel.com][1].
 In case of questions or comments, feel free to reach out in the [Discord][2].
 
+[0]: https://github.com/TurtleStoffel/quartz/tree/local-changes
 [1]: https://www.turtlestoffel.com
 [2]: https://discord.gg/UFECxB85ed
